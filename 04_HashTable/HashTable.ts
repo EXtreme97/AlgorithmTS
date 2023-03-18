@@ -35,7 +35,7 @@ export default class HashTable<T = any> {
   // 用于存储连地址法的链（数组）
   private storage: [string, T][][] = [];
   // 定义数组的长度
-  private length: number = 7;
+  private length: number = 11;
   // 记录已存放元素的个数
   private count: number = 0;
 
@@ -55,6 +55,20 @@ export default class HashTable<T = any> {
     const index = hashCode % max;
 
     return index;
+  }
+
+  private resize(newLength: number): void {
+    this.length = newLength;
+    const oldStorage = this.storage;
+    this.storage = [];
+    this.count = 0;
+    oldStorage.forEach((bucket) => {
+      if (!bucket) return;
+      for (let i = 0; i < bucket.length; i++) {
+        const tuple = bucket[i];
+        this.put(tuple[0], tuple[1]);
+      }
+    });
   }
   /**
    * 插入和修改操作
@@ -85,6 +99,13 @@ export default class HashTable<T = any> {
     if (!isUpdate) {
       bucket.push([key, value]);
       this.count++;
+
+      // 装填因子大于0.75扩容
+      const loadFactor = this.count / this.length;
+      if (loadFactor > 0.75) {
+        this.resize(this.length * 2);
+        // console.log("扩容resized=>", this.storage);
+      }
     }
   }
 
@@ -109,6 +130,11 @@ export default class HashTable<T = any> {
     }
   }
 
+  /**
+   * 删除
+   * @param key
+   * @returns
+   */
   delete(key: string): T | undefined {
     const index = this.hashFn(key, this.length);
     const bucket = this.storage[index];
@@ -121,6 +147,14 @@ export default class HashTable<T = any> {
       if (tk === key) {
         bucket.splice(i, 1);
         this.count--;
+
+        // 装填因子小于0.25缩容
+        const loadFactor = this.count / this.length;
+        if (loadFactor < 0.25 && this.length > 7) {
+          this.resize(Math.floor(this.length / 2));
+          // console.log("缩容resized=>", this.storage);
+        }
+
         return tv;
       }
     }
@@ -130,12 +164,22 @@ export default class HashTable<T = any> {
 
 const table = new HashTable();
 table.put("aaa", 100);
-table.put("aaa", 200);
+table.put("eee", 200);
 table.put("bbb", 300);
 table.put("ccc", 301);
-table.put("xyz", 302);
+table.put("ddd", 302);
+table.put("ggg", 302);
 table.put("lmn", 303);
+table.put("fff", 303);
+table.put("uvw", 303);
+table.put("def", 303);
+table.put("abc", 303);
 
 console.log("delete=>", table.delete("aaa"));
-
+table.delete("aaa");
+table.delete("eee");
+table.delete("bbb");
+table.delete("eee");
+table.delete("fff");
+table.delete("ggg");
 console.log("get=>", table.get("lmn"));
