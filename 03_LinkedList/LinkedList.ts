@@ -12,7 +12,7 @@ export default class LinkedList<T> {
   size: number = 0;
 
   private getNode(position: number): Node<T> | null {
-    if (position < 0 || position > this.size) return null;
+    if (position < 0 || position >= this.size) return null;
 
     let index = 0;
     let current: Node<T> | null = this.head;
@@ -41,7 +41,7 @@ export default class LinkedList<T> {
    * 插入
    */
   insert(position: number, element: T): boolean {
-    if (position < 0 || position > this.size) return false;
+    if (position < 0 || position >= this.size) return false;
 
     const node = new Node(element);
     if (position === 0) {
@@ -77,13 +77,13 @@ export default class LinkedList<T> {
       current = current.next;
     }
 
-    console.log(values.join("->"));
+    console.log("traverse->", values.join("->"));
   }
   /**
    *get
    */
   get(position: number): T | null {
-    if (position < 0 || position > this.size) return null;
+    if (position < 0 || position >= this.size) return null;
 
     return this.getNode(position)?.value ?? null;
   }
@@ -92,7 +92,7 @@ export default class LinkedList<T> {
    *removeAt
    */
   removeAt(position: number): T | null {
-    if (position < 0 || position > this.size) return null;
+    if (position < 0 || position >= this.size) return null;
 
     let current = this.head;
 
@@ -113,30 +113,79 @@ export default class LinkedList<T> {
     this.size--;
     return current?.value ?? null;
   }
+  /**
+   * remove
+   * @param element
+   * @returns T
+   */
+  remove(element: T): T | null {
+    const index = this.indexOf(element);
+    return this.removeAt(index);
+  }
+  /**
+   * update
+   */
+  update(element: T, position: number): boolean {
+    if (position < 0 || position >= this.size) return false;
+
+    const node = this.getNode(position);
+    node!.value = element;
+    return true;
+  }
 
   /**
-   *
+   * indexOf
    */
+  indexOf(element: T): number {
+    let current = this.head;
+    let index = 0;
+    while (current) {
+      if (current.value === element) {
+        return index;
+      }
+      index++;
+      current = current.next;
+    }
+
+    return -1;
+  }
+
+  /**
+   * isEmpty
+   */
+  isEmpty(): boolean {
+    return this.size === 0;
+  }
 }
 
 const linkedList = new LinkedList<string>();
+console.log("isEmpty->", linkedList.isEmpty());
+
 linkedList.append("a");
 linkedList.append("b");
 linkedList.append("c");
 linkedList.append("d");
 linkedList.append("e");
+linkedList.append("f");
 linkedList.insert(0, "x");
 linkedList.insert(2, "y");
-linkedList.insert(7, "z");
+linkedList.insert(6, "z");
 // linkedList.insert(9, "z");
 linkedList.traverse();
-console.log(linkedList.get(5));
+console.log("get->", linkedList.get(5));
 
 console.log(
+  "removeAt->",
   linkedList.removeAt(0),
   linkedList.removeAt(5),
   linkedList.removeAt(5)
 );
 
 linkedList.traverse();
-// console.log(linkedList.size);
+linkedList.update("l", 3);
+linkedList.traverse();
+console.log("indexOf->", linkedList.indexOf("l"));
+console.log("remove->", linkedList.remove("l"));
+console.log("isEmpty->", linkedList.isEmpty());
+linkedList.traverse();
+console.log("size->", linkedList.size);
