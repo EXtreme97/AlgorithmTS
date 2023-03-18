@@ -31,21 +31,111 @@
  *
  */
 
-/**
- *
- * @param key
- * @param max
- * @returns
- */
-export function hashFn(key: string, max: number): number {
-  let hashCode = 0;
-  const length = key.length;
-  for (let index = 0; index < length; index++) {
-    //霍纳法则计算hashCode
-    hashCode = 31 * hashCode + key.charCodeAt(index);
+export default class HashTable<T = any> {
+  // 用于存储连地址法的链（数组）
+  private storage: [string, T][][] = [];
+  // 定义数组的长度
+  private length: number = 7;
+  // 记录已存放元素的个数
+  private count: number = 0;
+
+  /**
+   * 私有哈希函数
+   * @param key
+   * @param max
+   * @returns
+   */
+  private hashFn(key: string, max: number): number {
+    let hashCode = 0;
+    const length = key.length;
+    for (let index = 0; index < length; index++) {
+      //霍纳法则计算hashCode
+      hashCode = 31 * hashCode + key.charCodeAt(index);
+    }
+    const index = hashCode % max;
+
+    return index;
   }
-  const index = hashCode % max;
-  return index;
+  /**
+   * 插入和修改操作
+   * @param key
+   * @param value
+   */
+  put(key: string, value: T) {
+    const index = this.hashFn(key, this.length);
+
+    // 取出索引值对应位置的数组（桶）
+    let bucket = this.storage[index];
+    if (!bucket) {
+      bucket = [];
+      this.storage[index] = bucket;
+    }
+
+    let isUpdate = false;
+    for (let index = 0; index < bucket.length; index++) {
+      const tuple = bucket[index];
+
+      const tupleKey = tuple[0];
+      if (tupleKey === key) {
+        // 覆盖
+        tuple[1] = value;
+        isUpdate = true;
+      }
+    }
+    if (!isUpdate) {
+      bucket.push([key, value]);
+      this.count++;
+    }
+  }
+
+  /**
+   *取值
+   * @param key
+   * @returns
+   */
+  get(key: string): T | undefined {
+    const index = this.hashFn(key, this.length);
+
+    const bucket = this.storage[index];
+
+    if (!bucket) return undefined;
+    for (let i = 0; i < bucket.length; i++) {
+      const tuple = bucket[i];
+      const tupleKey = tuple[0];
+      const tupleValue = tuple[1];
+      if (tupleKey === key) {
+        return tupleValue;
+      }
+    }
+  }
+
+  delete(key: string): T | undefined {
+    const index = this.hashFn(key, this.length);
+    const bucket = this.storage[index];
+    if (!bucket) return undefined;
+
+    for (let i = 0; i < bucket.length; i++) {
+      const tuple = bucket[i];
+      const tk = tuple[0];
+      const tv = tuple[1];
+      if (tk === key) {
+        bucket.splice(i, 1);
+        this.count--;
+        return tv;
+      }
+    }
+    return;
+  }
 }
 
-// console.log(hashFn("abcdef", 29));
+const table = new HashTable();
+table.put("aaa", 100);
+table.put("aaa", 200);
+table.put("bbb", 300);
+table.put("ccc", 301);
+table.put("xyz", 302);
+table.put("lmn", 303);
+
+console.log("delete=>", table.delete("aaa"));
+
+console.log("get=>", table.get("lmn"));
