@@ -56,9 +56,15 @@ export default class HashTable<T = any> {
 
     return index;
   }
-
+  /**
+   * 更新容量的操作
+   * @param newLength
+   */
   private resize(newLength: number): void {
-    this.length = newLength;
+    // this.length = newLength;
+    this.length = this.getNextPrime(newLength);
+    console.log("new length=>", this.length);
+
     const oldStorage = this.storage;
     this.storage = [];
     this.count = 0;
@@ -69,6 +75,32 @@ export default class HashTable<T = any> {
         this.put(tuple[0], tuple[1]);
       }
     });
+  }
+  /**
+   *判断是否是质数
+   * @param num
+   * @returns
+   */
+  isPrime(num: number): boolean {
+    const sqr = Math.sqrt(num);
+    for (let i = 2; i < sqr; i++) {
+      if (num % i == 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+  /**
+   *
+   * @param num
+   * @returns
+   */
+  getNextPrime(num: number): number {
+    let newPrime = num;
+    while (!this.isPrime(newPrime)) {
+      newPrime++;
+    }
+    return newPrime;
   }
   /**
    * 插入和修改操作
@@ -183,3 +215,4 @@ table.delete("eee");
 table.delete("fff");
 table.delete("ggg");
 console.log("get=>", table.get("lmn"));
+// console.log(table.getNextPrime(22));
