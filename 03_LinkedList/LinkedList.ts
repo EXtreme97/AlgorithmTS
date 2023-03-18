@@ -48,15 +48,19 @@ export default class LinkedList<T> {
       node.next = this.head;
       this.head = node;
     } else {
-      let current = this.head;
-      let pre: Node<T> | null;
-      let index = 0;
-      while (index++ < position && current) {
-        pre = current;
-        current = current.next;
-      }
+      // let current = this.head;
+      // let pre: Node<T> | null;
+      // let index = 0;
+      // while (index++ < position && current) {
+      //   pre = current;
+      //   current = current.next;
+      // }
+      // pre!.next = node;
+      // node.next = current;
+
+      const pre = this.getNode(position - 1);
+      node.next = pre!.next;
       pre!.next = node;
-      node.next = current;
     }
     this.size++;
     return true;
@@ -78,15 +82,10 @@ export default class LinkedList<T> {
   /**
    *get
    */
-  get(position: number): T | undefined {
-    if (position < 0 || position > this.size) return;
+  get(position: number): T | null {
+    if (position < 0 || position > this.size) return null;
 
-    let index = 0;
-    let current: Node<T> | null = this.head;
-    while (index++ < position && current) {
-      current = current.next;
-    }
-    return current?.value ?? undefined;
+    return this.getNode(position)?.value ?? null;
   }
 
   /**
@@ -98,15 +97,18 @@ export default class LinkedList<T> {
     let current = this.head;
 
     if (position === 0) {
-      this.head = this.head?.next ?? null;
+      this.head = current?.next ?? null;
     } else {
-      let pre: Node<T> | null = null;
-      let index = 0;
-      while (index++ < position && current) {
-        pre = current;
-        current = current.next;
-      }
-      pre!.next = current?.next ?? null;
+      // let pre: Node<T> | null = null;
+      // let index = 0;
+      // while (index++ < position && current) {
+      //   pre = current;
+      //   current = current.next;
+      // }
+
+      let pre = this.getNode(position - 1);
+      current = this.getNode(position);
+      pre!.next = pre?.next?.next ?? null;
     }
     this.size--;
     return current?.value ?? null;
