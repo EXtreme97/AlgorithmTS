@@ -20,7 +20,7 @@ class LinkedStack<T> implements IStack<T> {
   /**
    * size
    */
-  public size(): number {
+  public get size(): number {
     return 0;
   }
 }

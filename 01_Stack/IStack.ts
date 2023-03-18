@@ -3,5 +3,5 @@ export default interface IStack<T> {
   pop(): T | undefined;
   peek(): T | undefined;
   isEmpty(): boolean;
-  size(): number;
+ get size(): number;
 }

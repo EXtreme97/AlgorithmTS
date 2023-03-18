@@ -18,7 +18,7 @@ class ArrayStack<T> implements IStack<T> {
   public isEmpty(): boolean {
     return this.data.length === 0;
   }
-  public size(): number {
+  public get size(): number {
     return this.data.length;
   }
 }
