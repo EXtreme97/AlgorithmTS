@@ -7,9 +7,25 @@ export class Node<T> {
   }
 }
 
-export default class LinkedList<T> {
+export interface ILinkedList<T> {
+  append(element: T): void;
+  traverse(): void;
+  insert(position: number, element: T): boolean;
+  removeAt(position: number): T | null;
+  get(position: number): T | null;
+  update(element: T, position: number): boolean;
+  indexOf(element: T): number;
+  remove(element: T): T | null;
+  isEmpty(): boolean;
+  get length(): number;
+}
+
+export default class LinkedList<T> implements ILinkedList<T> {
+  get length(): number {
+    return this.size;
+  }
   head: Node<T> | null = null;
-  size: number = 0;
+  private size: number = 0;
 
   private getNode(position: number): Node<T> | null {
     if (position < 0 || position >= this.size) return null;
@@ -188,4 +204,4 @@ console.log("indexOf->", linkedList.indexOf("l"));
 console.log("remove->", linkedList.remove("l"));
 console.log("isEmpty->", linkedList.isEmpty());
 linkedList.traverse();
-console.log("size->", linkedList.size);
+console.log("size->", linkedList.length);
