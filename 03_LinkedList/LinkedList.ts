@@ -1,7 +1,6 @@
 export class Node<T> {
   value: T;
   next: Node<T> | null = null;
-
   constructor(value: T) {
     this.value = value;
   }
@@ -25,10 +24,10 @@ export default class LinkedList<T> implements ILinkedList<T> {
     return this.size;
   }
   protected head: Node<T> | null = null;
-  private size: number = 0;
+  protected size: number = 0;
   protected tail: Node<T> | null = null;
 
-  private getNode(position: number): Node<T> | null {
+  protected getNode(position: number): Node<T> | null {
     if (position < 0 || position >= this.size) return null;
 
     let index = 0;
@@ -103,7 +102,7 @@ export default class LinkedList<T> implements ILinkedList<T> {
       current = current.next;
     }
 
-    console.log("traverse->", values.join("->"));
+    console.log("traverse=>", values.join("->"));
   }
   /**
    *get

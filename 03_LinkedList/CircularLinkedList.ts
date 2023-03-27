@@ -3,7 +3,7 @@ import LinkedList from "./LinkedList";
 /**
  * 循环链表的实现
  */
-class CircularLinkedList<T> extends LinkedList<T> {
+export default class CircularLinkedList<T> extends LinkedList<T> {
   append(element: T): void {
     super.append(element);
     this.tail!.next = this.head;
@@ -46,7 +46,7 @@ class CircularLinkedList<T> extends LinkedList<T> {
     return value;
   }
   // indexOf(element: T): number {
-      
+
   // }
 }
 
@@ -63,7 +63,6 @@ cl.insert(0, "lmn");
 cl.traverse();
 cl.removeAt(2);
 cl.traverse();
-cl.update("a",1)
+cl.update("a", 1);
 
-console.log(cl.indexOf('aa'));
-
+console.log(cl.indexOf("aa"));
