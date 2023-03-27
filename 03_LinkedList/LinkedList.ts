@@ -24,8 +24,9 @@ export default class LinkedList<T> implements ILinkedList<T> {
   get length(): number {
     return this.size;
   }
-  head: Node<T> | null = null;
+  protected head: Node<T> | null = null;
   private size: number = 0;
+  protected tail: Node<T> | null = null;
 
   private getNode(position: number): Node<T> | null {
     if (position < 0 || position >= this.size) return null;
@@ -37,6 +38,9 @@ export default class LinkedList<T> implements ILinkedList<T> {
     }
     return current ?? null;
   }
+  isLastNode(node: Node<T>) {
+    return node === this.tail;
+  }
   /**
    * 添加
    */
@@ -44,20 +48,23 @@ export default class LinkedList<T> implements ILinkedList<T> {
     const node = new Node(element);
     if (!this.head) {
       this.head = node;
+      this.tail = node;
     } else {
-      let current = this.head;
-      while (current.next) {
-        current = current.next;
-      }
-      current.next = node;
+      // let current = this.head;
+      // while (current.next) {
+      //   current = current.next;
+      // }
+      // current.next = node;
+      this.tail!.next = node;
     }
+    this.tail = node;
     this.size++;
   }
   /**
    * 插入
    */
   insert(position: number, element: T): boolean {
-    if (position < 0 || position >= this.size) return false;
+    if (position < 0 || position > this.size) return false;
 
     const node = new Node(element);
     if (position === 0) {
@@ -77,6 +84,9 @@ export default class LinkedList<T> implements ILinkedList<T> {
       const pre = this.getNode(position - 1);
       node.next = pre!.next;
       pre!.next = node;
+      if (this.size === position) {
+        this.tail = node;
+      }
     }
     this.size++;
     return true;
@@ -108,7 +118,7 @@ export default class LinkedList<T> implements ILinkedList<T> {
    *removeAt
    */
   removeAt(position: number): T | null {
-    if (position < 0 || position >= this.size) return null;
+    if (position < 0 || position > this.size) return null;
 
     let current = this.head;
 
@@ -123,8 +133,12 @@ export default class LinkedList<T> implements ILinkedList<T> {
       // }
 
       let pre = this.getNode(position - 1);
-      current = this.getNode(position);
+      // current = this.getNode(position);
+      current = pre!.next;
       pre!.next = pre?.next?.next ?? null;
+      if (position === this.length - 1) {
+        this.tail = pre;
+      }
     }
     this.size--;
     return current?.value ?? null;
@@ -160,7 +174,11 @@ export default class LinkedList<T> implements ILinkedList<T> {
         return index;
       }
       index++;
-      current = current.next;
+      if (this.isLastNode(current)) {
+        current = null;
+      } else {
+        current = current.next;
+      }
     }
 
     return -1;
@@ -174,34 +192,34 @@ export default class LinkedList<T> implements ILinkedList<T> {
   }
 }
 
-const linkedList = new LinkedList<string>();
-console.log("isEmpty->", linkedList.isEmpty());
+// const linkedList = new LinkedList<string>();
+// console.log("isEmpty->", linkedList.isEmpty());
 
-linkedList.append("a");
-linkedList.append("b");
-linkedList.append("c");
-linkedList.append("d");
-linkedList.append("e");
-linkedList.append("f");
-linkedList.insert(0, "x");
-linkedList.insert(2, "y");
-linkedList.insert(6, "z");
-// linkedList.insert(9, "z");
-linkedList.traverse();
-console.log("get->", linkedList.get(5));
+// linkedList.append("a");
+// linkedList.append("b");
+// linkedList.append("c");
+// linkedList.append("d");
+// linkedList.append("e");
+// linkedList.append("f");
+// linkedList.insert(0, "x");
+// linkedList.insert(2, "y");
+// linkedList.insert(6, "z");
+// // linkedList.insert(9, "z");
+// linkedList.traverse();
+// console.log("get->", linkedList.get(5));
 
-console.log(
-  "removeAt->",
-  linkedList.removeAt(0),
-  linkedList.removeAt(5),
-  linkedList.removeAt(5)
-);
+// console.log(
+//   "removeAt->",
+//   linkedList.removeAt(0),
+//   linkedList.removeAt(5),
+//   linkedList.removeAt(5)
+// );
 
-linkedList.traverse();
-linkedList.update("l", 3);
-linkedList.traverse();
-console.log("indexOf->", linkedList.indexOf("l"));
-console.log("remove->", linkedList.remove("l"));
-console.log("isEmpty->", linkedList.isEmpty());
-linkedList.traverse();
-console.log("size->", linkedList.length);
+// linkedList.traverse();
+// linkedList.update("l", 3);
+// linkedList.traverse();
+// console.log("indexOf->", linkedList.indexOf("l"));
+// console.log("remove->", linkedList.remove("l"));
+// console.log("isEmpty->", linkedList.isEmpty());
+// linkedList.traverse();
+// console.log("size->", linkedList.length);
