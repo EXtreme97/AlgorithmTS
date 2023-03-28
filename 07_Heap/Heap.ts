@@ -91,13 +91,13 @@ export default class Heap<T> {
     cbtPrint(this.data);
   }
 }
-const arr = [19, 100, 36, 17, 3, 25];
+// const arr = [19, 100, 36, 17, 3, 25];
 // const h = new Heap<number>();
 // for (const iterator of arr) {
 //   h.insert(iterator);
 // }
-const h = new Heap<number>(arr, false);
-h.print()
+// const h = new Heap<number>(arr, false);
+// h.print()
 // console.log(h.data);
 // h.insert(133);
 // console.log(h.extract());
