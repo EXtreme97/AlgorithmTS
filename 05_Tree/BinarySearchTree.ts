@@ -224,44 +224,44 @@ export default class BSTree<T> {
     }
   }
 }
-const bst = new BSTree<number>();
-bst.insert(11);
-bst.insert(7);
-bst.insert(15);
-bst.insert(5);
-bst.insert(3);
-bst.insert(9);
-bst.insert(8);
-bst.insert(10);
-bst.insert(13);
-bst.insert(12);
-bst.insert(14);
-bst.insert(20);
-bst.insert(18);
-bst.insert(25);
-bst.insert(6);
-bst.remove(15);
-bst.print();
-
-bst.remove(9);
-// bst.remove(8);
-// bst.remove(12);
-bst.print();
-// bst.remove(6);
-// bst.remove(10);
-// bst.remove(25);
+// const bst = new BSTree<number>();
+// bst.insert(11);
+// bst.insert(7);
+// bst.insert(15);
+// bst.insert(5);
+// bst.insert(3);
+// bst.insert(9);
+// bst.insert(8);
+// bst.insert(10);
+// bst.insert(13);
+// bst.insert(12);
+// bst.insert(14);
+// bst.insert(20);
+// bst.insert(18);
+// bst.insert(25);
+// bst.insert(6);
+// bst.remove(15);
 // bst.print();
 
-// bst.remove(20);
-// bst.remove(13);
+// bst.remove(9);
+// // bst.remove(8);
+// // bst.remove(12);
 // bst.print();
+// // bst.remove(6);
+// // bst.remove(10);
+// // bst.remove(25);
+// // bst.print();
 
-// bst.preOrderTraverse();
-// bst.inOrderTraverse();
-// bst.postOrderTraverse();
-// bst.levelOrderTraverse();
-console.log("max=>", bst.max());
-console.log("min=>", bst.min());
-console.log("search=>", bst.search(18));
-console.log("search=>", bst.search(13));
-console.log("search=>", bst.search(30));
+// // bst.remove(20);
+// // bst.remove(13);
+// // bst.print();
+
+// // bst.preOrderTraverse();
+// // bst.inOrderTraverse();
+// // bst.postOrderTraverse();
+// // bst.levelOrderTraverse();
+// console.log("max=>", bst.max());
+// console.log("min=>", bst.min());
+// console.log("search=>", bst.search(18));
+// console.log("search=>", bst.search(13));
+// console.log("search=>", bst.search(30));
