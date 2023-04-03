@@ -2,7 +2,7 @@ module.exports = function (fn) {
   if (fn.length <= 1) {
     return fn;
   }
-  const gen = (...args) => {
+  const res = (...args) => {
     if (fn.length === args.length) {
       return fn(...args);
     } else {
@@ -11,5 +11,5 @@ module.exports = function (fn) {
       };
     }
   };
-  return gen;
+  return res;
 };
