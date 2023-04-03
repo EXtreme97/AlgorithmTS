@@ -43,7 +43,7 @@ export default class Request {
         return err;
       }
     );
-    // 拦截器
+    // 新建实例时传入的拦截器
     this.instance.interceptors.request.use(
       config.interceptors?.resquestSuccessFn,
       config.interceptors?.resquestFailureFn
