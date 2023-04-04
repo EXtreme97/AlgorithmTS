@@ -63,6 +63,7 @@ export function fib4(n: number): number {
  * @returns
  */
 export function fib5(n: number): number {
+  if (n <= 1) return n;
   let pre = 0;
   let cur = 1;
 
